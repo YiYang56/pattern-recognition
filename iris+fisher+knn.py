@@ -138,4 +138,4 @@ w=fisher(iris1,iris2,iris3,m,4,1)
 k=9
 OA,AA1,AA2,AA3=knn(iris,k)
 print('总体精度OA为：{}'.format(OA))
-print('三类的平均精度AA分别为：{}、{}、{}'.format(AA1,AA2,AA3))
+print('平均精度AA为：{}'.format((AA1+AA2+AA3)/3))
