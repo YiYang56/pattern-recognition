@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-# 定义fisher函数，输入为所有类别的集合、全局均值、维度和测试集所属的类别，输出为w*和阈值w0
+# 定义fisher函数，输入为所有类别的集合、全局均值、维度和测试集所属的类别，输出为w*
 def fisher(A,B,C,m,n,flag):
     m1 = np.mean(A, axis=0)
     m2 = np.mean(B, axis=0)
@@ -75,7 +75,7 @@ def fisher(A,B,C,m,n,flag):
 
     return w
 
-# 定义knn函数，输入为预处理后的数据集、测试集的索引、k值和fisher中求得的投影方向，输出为OA和三个AA
+# 定义knn函数，输入为预处理后的数据集、测试集的索引、k值和fisher中求得的投影方向
 def knn(iris,g,k,w):
     I = np.zeros((150, 2))
     # 根据w对输入进行投影
@@ -89,7 +89,7 @@ def knn(iris,g,k,w):
             I[i, 1] = 3
 
     # 定义全局变量，以计算分类正确个数
-    global accuracy,a1,a2,a3
+    global a1,a2,a3
 
     count1 = 0
     count2 = 0
@@ -118,7 +118,6 @@ def knn(iris,g,k,w):
     if count3 >= count1 and count3 >= count2:
         prediction = 3
     if prediction == test[1]:
-        accuracy += 1
         if g<50:
             a1+=1
         elif g<100:
@@ -128,13 +127,12 @@ def knn(iris,g,k,w):
 
 path=r'iris.data'
 gakki = pd.read_csv(path, header=None)
-
 iris=gakki.values[0:150,0:4]
 iris1=gakki.values[0:50,0:4]
 iris2=gakki.values[50:100,0:4]
 iris3=gakki.values[100:150,0:4]
 
-accuracy,a1,a2,a3=0,0,0,0
+a1,a2,a3=0,0,0
 
 # 采用留一法
 for i in range(150):
@@ -160,5 +158,6 @@ for i in range(150):
     w = fisher(A, B, C, m, 4, flag)
     k=5
     knn(iris,i,k,w)
-print('总体精度OA为：{}'.format(accuracy/150))
+print('总体精度OA为：{}'.format((a1+a2+a3)/150))
 print('平均精度AA为：{}'.format((a1/50+a2/50+a3/50)/3))
+print('每一类分对的个数分别为{}、{}、{}'.format(a1,a2,a3))
